@@ -5,8 +5,10 @@
 
 
 // Import your sub-components
-import Sidebar from '@/components/ui/sidebar/Sidebar';
+
+
 import { Link } from 'react-router-dom';
+import Sidebar from '../components/ui/sidebar/Sidebar';
 
 
 

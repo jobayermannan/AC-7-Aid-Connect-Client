@@ -1,10 +1,25 @@
-const Register = () => {
-  return (
-	 <div className="flex items-center justify-center mt-40 p-30">
+import { TemplateForm } from "./TemplateForm";
 
-<div className="flex items-center justify-center">
-		<p className="font-bold text-xl">The Register Page is currently in the development process...</p>
-			  
+const Register = () => {
+	// Step 2: Prepare the props
+	const formFields = [
+		{ id: "email", label: "Email Address", placeholder: "yourname@example.com", type: "email" },
+		{ id: "password", label: "Password", placeholder: "••••••••", type: "password" }
+	 ];
+  
+	 const buttonText = "Sign Up";
+	 const loginLink = "/login"; // Assuming you want to link to a login page instead
+  
+  return (
+	 <div className="flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8 min-h-screen ">
+
+<div className="w-full max-w-md  mt-6 sm:mt-10 sm:pt-12">
+	<TemplateForm
+  fields={formFields} buttonText={buttonText} loginLink={loginLink} />
+
+	
+
+		
 	 </div>	  
 	 </div>
   );

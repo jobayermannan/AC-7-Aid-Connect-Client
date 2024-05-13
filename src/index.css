@@ -74,6 +74,15 @@
       
     }
   } 
+
+/* Custom CSS */
+@media (max-width: 639px) {
+  .custom-class {
+    /* Styles here will only apply to screens smaller than 640px */
+    padding: 10px; /* Example padding */
+    margin: 20px; /* Example margin */
+  }
+}
   
   /* @layer base {
     body {
