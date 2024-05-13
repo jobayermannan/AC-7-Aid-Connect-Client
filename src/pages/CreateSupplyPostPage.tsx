@@ -1,13 +1,62 @@
-import React from "react";
+import PageTitle from "@/components/ui/DashboardTilte";
+import { DataTable } from "@/components/ui/DataTable";
+
+
+import { ColumnDef } from "@tanstack/react-table"
+
+
+
 
 const CreateSupplyPostPage = () => {
-
   return (
-	<div className="pl-4 absolute  text-slate-500 top-1/2">
-	<p className="font-bold text-xl">The CreateSupplyPostPage is currently in the development process...</p>
+	<div className="">
+		<PageTitle title="All Supply Posts"></PageTitle>
+	<DataTable columns={columns} data={payments}></DataTable>
 		  
  </div>
   );
 };
 
 export default CreateSupplyPostPage;
+
+
+
+export type Payment = {
+  id: string
+  amount: number
+  status: "pending" | "processing" | "success" | "failed"
+  email: string
+}
+
+export const columns: ColumnDef<Payment>[] = [
+  {
+    accessorKey: "status",
+    header: "Status",
+  },
+  {
+    accessorKey: "email",
+    header: "Email",
+  },
+  {
+    accessorKey: "amount",
+    header: "Amount",
+  },
+]
+
+
+ export const payments: Payment[] = [
+	{
+	  id: "728ed52f",
+	  amount: 100,
+	  status: "pending",
+	  email: "m@example.com",
+	},
+	{
+	  id: "489e1d42",
+	  amount: 125,
+	  status: "processing",
+	  email: "example@gmail.com",
+	},
+	
+ ]
+ 
