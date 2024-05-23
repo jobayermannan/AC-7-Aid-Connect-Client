@@ -16,10 +16,6 @@ export function Dashboard() {
   return (
    
       <div >
-       
-    
-             
-     
          <span className=' className="  px-4 md:px-8 text-sm font-medium relative border-neutral-200 text-black dark:text-white rounded-full   ' >  
              <span>
               <Link to="/"> Aid Connect</Link>

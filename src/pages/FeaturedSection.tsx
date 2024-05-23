@@ -1,14 +1,15 @@
 
 import { BackgroundGradient } from '@/components/ui/background-gradient';
 import { Button } from '@/components/ui/moving-border';
+import { useGetSuppliesQuery } from '@/redux/api/SuppliesApi';
 import { Link } from 'react-router-dom';
-import { useGetFeaturedSuppliesQuery } from '@/redux/api/SuppliesApi';
+
 
 
 
 const FeaturedSection = () => {
    // Use the generated hook to fetch supplies. No need for useState or useEffect.
-   const { data: supplies, error, isLoading } = useGetFeaturedSuppliesQuery();
+   const { data: supplies, error, isLoading } = useGetSuppliesQuery();
 
    // Handle loading and error states
    if (isLoading) return <div>Loading...</div>;
@@ -29,7 +30,7 @@ const FeaturedSection = () => {
         <div className="mt-10 mx-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
         {featuredSupplies.map((post) => (
-              <div key={post.id} className="flex justify-center">
+              <div key={post._id} className="flex justify-center">
                 <BackgroundGradient className="flex flex-col rounded-[22px] bg-white dark:bg-zinc-900 overflow-hidden h-full max-w-sm">
                   <div className="p-4 sm:p-6 flex flex-col items-center text-center flex-grow">
                     <img src={post.image} alt={post.title} className="w-full h-48 object-cover" />

@@ -1,33 +1,41 @@
-// src/features/supplies/suppliesApi.ts
+// src/api/suppliesApi.ts
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-// Define the Supply type according to the provided structure
 type Supply = {
-  id: string;
-  image: string;
-  title: string;
+  _id: string;
+  image?:string;
   category: string;
+  title: string;
   amount: string;
-  detailLink: string;
   isFeatured: boolean;
 };
 
-// Define the expected structure for the API response
 interface SuppliesResponse {
   data: Supply[];
 }
 
 export const suppliesApi = createApi({
   reducerPath: 'suppliesApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://l2-b2-frontend-path-assignment-6-server-starter-pack-mu.vercel.app/api/v1/' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://aid-connect-server-rj8hofw7t-jobayermannans-projects.vercel.app/api/v1/' }),
   endpoints: (builder) => ({
-    getFeaturedSupplies: builder.query<Supply[], void>({
+    getSupplies: builder.query<Supply[], void>({
       query: () => 'supplies',
-      // Ensure the transformResponse correctly handles the typed response
-      transformResponse: (response: SuppliesResponse) => response.data.filter(supply => supply.isFeatured).slice(0, 6),
+      transformResponse: (response: SuppliesResponse) => response.data,
+    }),
+    updateSupply: builder.mutation<void, Partial<Supply> & Pick<Supply, '_id'>>({
+      query: ({ _id, ...patch }) => ({
+        url: `update-supplies/${_id}`,
+        method: 'PATCH',
+        body: patch,
+      }),
+    }),
+    deleteSupply: builder.mutation<void, string>({
+      query: (_id) => ({
+        url: `delete-supplies/${_id}`,
+        method: 'DELETE',
+      }),
     }),
   }),
 });
 
-// Export hooks for usage in functional components
-export const { useGetFeaturedSuppliesQuery } = suppliesApi;
+export const { useGetSuppliesQuery, useUpdateSupplyMutation, useDeleteSupplyMutation } = suppliesApi;
