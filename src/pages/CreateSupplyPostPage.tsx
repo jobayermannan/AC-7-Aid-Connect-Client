@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"; // Assuming you have a Select component
 import { cn } from "@/utils/cn";
+import { useCreateSupplyMutation } from "@/redux/api/SuppliesApi";
+
 
 // Define the form data types
 interface IFormInput {
@@ -31,6 +33,7 @@ const schema = yup.object().shape({
 
 export default function CreateSupplyPostPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [createSupply] = useCreateSupplyMutation();
 
   const { register, handleSubmit, setValue, formState: { errors } } = useForm<IFormInput>({
     resolver: yupResolver(schema) as any, // Type assertion to bypass type mismatch
@@ -50,17 +53,8 @@ export default function CreateSupplyPostPage() {
     formData.append("featuring", data.featuring.toString());
 
     try {
-      const response = await fetch('https://aid-connect-server-rj8hofw7t-jobayermannans-projects.vercel.app/api/v1/create-supplies', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const result = await response.json();
-      console.log('Form submitted successfully:', result);
+      await createSupply(formData).unwrap();
+      console.log('Form submitted successfully');
       setIsSubmitted(true); // Set the state to true to show the success message
     } catch (error) {
       console.error('Form submission error:', error);
@@ -96,10 +90,10 @@ export default function CreateSupplyPostPage() {
         <LabelInputContainer className="mb-8">
           <Label htmlFor="featuring">Featuring</Label>
           <Select onValueChange={(value) => {
-  const booleanValue = value === "true";
-  console.log("Selected featuring value:", booleanValue);
-  setValue("featuring", booleanValue);
-}}>
+            const booleanValue = value === "true";
+            console.log("Selected featuring value:", booleanValue);
+            setValue("featuring", booleanValue);
+          }}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select Featuring" />
             </SelectTrigger>

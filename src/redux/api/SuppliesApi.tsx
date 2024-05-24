@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 type Supply = {
   _id: string;
-  image?:string;
+  image?: string;
   category: string;
   title: string;
   amount: string;
@@ -22,6 +22,13 @@ export const suppliesApi = createApi({
       query: () => 'supplies',
       transformResponse: (response: SuppliesResponse) => response.data,
     }),
+    createSupply: builder.mutation<void, FormData>({
+      query: (formData) => ({
+        url: 'create-supplies',
+        method: 'POST',
+        body: formData,
+      }),
+    }),
     updateSupply: builder.mutation<void, Partial<Supply> & Pick<Supply, '_id'>>({
       query: ({ _id, ...patch }) => ({
         url: `update-supplies/${_id}`,
@@ -38,4 +45,4 @@ export const suppliesApi = createApi({
   }),
 });
 
-export const { useGetSuppliesQuery, useUpdateSupplyMutation, useDeleteSupplyMutation } = suppliesApi;
+export const { useGetSuppliesQuery, useCreateSupplyMutation, useUpdateSupplyMutation, useDeleteSupplyMutation } = suppliesApi;
