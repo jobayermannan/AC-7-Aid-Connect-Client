@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import { Link, NavLink } from "react-router-dom";
 import { cn } from "../../lib/utils";
-import React from "react";
+
 
 export const FloatingNav = ({
   navItems,

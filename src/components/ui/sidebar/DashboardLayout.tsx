@@ -1,7 +1,7 @@
 import { Outlet } from "react-router";
 
 
-import React from "react";
+
 import { cn } from "../../../lib/utils";
 import { Dashboard } from "../../../pages/Dashboard";
 
