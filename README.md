@@ -3,7 +3,7 @@
 
 
 ### Live Link
-[Post-Disaster Community Health and Medical Supply Chain Platform](https://your-live-link-here.com)
+[Post-Disaster Community Health and Medical Supply Chain Platform](https://aid-connect.netlify.app)
 
 ### Technology Stack
 - **React**
@@ -98,7 +98,7 @@ The project aims to develop a comprehensive Post-Disaster Community Health and M
 ### How to Run the Project
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-repo-link.git
+   git clone https://github.com/jobayermannan/AC-7-Aid-Connect-Client.git
    cd your-repo-directory
    ```
 
@@ -134,7 +134,7 @@ The project aims to develop a comprehensive Post-Disaster Community Health and M
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ### Contact
-For any inquiries or feedback, please contact [your-email@example.com](mailto:your-email@example.com).
+For any inquiries or feedback, please contact [oxobayer777@gmail.com](mailto:your-email@example.com).
 
 ---
 
