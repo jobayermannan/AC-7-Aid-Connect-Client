@@ -3,6 +3,7 @@ import { TemplateForm } from "./TemplateForm";
 const Register = () => {
 	// Step 2: Prepare the props
 	const formFields = [
+		{ id: "name", label: "User Name", placeholder: "user name", type: "name" },
 		{ id: "email", label: "Email Address", placeholder: "yourname@example.com", type: "email" },
 		{ id: "password", label: "Password", placeholder: "••••••••", type: "password" }
 	 ];
