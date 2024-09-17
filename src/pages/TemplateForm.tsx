@@ -4,41 +4,36 @@ import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
 
-// Adjusted TypeScript interfaces for your props to include loginLink
 interface FormField {
   id: string;
   label: string;
   placeholder: string;
   type: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 interface TemplateFormProps {
   fields: FormField[];
-  
   buttonText: string;
   registerLink?: string;
   loginLink?: string;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void; // Add onSubmit prop
 }
 
-// Modified TemplateForm function to accept both registerLink and loginLink
-export function TemplateForm({ fields, buttonText, registerLink, loginLink }: TemplateFormProps) {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("Form submitted");
-  };
-
+export function TemplateForm({ fields, buttonText, registerLink, loginLink, onSubmit }: TemplateFormProps) {
   return (
     <div className="max-w-md w-full rounded-2xl mt-20 mx-auto pt-8 md:rounded-2xl sm:p-8 md:p-8 shadow-input bg-white dark:bg-black mb-20">
       <h2 className="font-bold text-xl text-center text-neutral-800 dark:text-neutral-200">
         Aid Connect
       </h2>
 
-      <form onSubmit={handleSubmit} className="custom-class">
+      <form onSubmit={onSubmit} className="custom-class"> {/* Use onSubmit prop */}
         <div className="flex flex-col">
-          {fields.map(({ id, label, placeholder, type }) => (
+          {fields.map(({ id, label, placeholder, type, value, onChange }) => (
             <LabelInputContainer key={id} className="mb-4">
               <Label htmlFor={id}>{label}</Label>
-              <Input id={id} placeholder={placeholder} type={type} />
+              <Input id={id} placeholder={placeholder} type={type} value={value} onChange={onChange} />
             </LabelInputContainer>
           ))}
         </div>
@@ -49,7 +44,6 @@ export function TemplateForm({ fields, buttonText, registerLink, loginLink }: Te
         >
           {buttonText} &rarr;
         </button>
-        {/* Conditionally render links based on props */}
         {registerLink && (
           <h2 className="mt-4 text-center">
             Don't have an account? <Link to={registerLink}>Register</Link>
@@ -61,7 +55,6 @@ export function TemplateForm({ fields, buttonText, registerLink, loginLink }: Te
           </h2>
         )}
         <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px]" />
-        {/* Additional content */}
       </form>
     </div>
   );

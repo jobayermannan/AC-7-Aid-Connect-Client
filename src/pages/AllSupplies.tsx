@@ -1,12 +1,13 @@
+// src/pages/AllSupplies.tsx
+import React from 'react';
 import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
 import { useGetSuppliesQuery } from "@/redux/api/SuppliesApi";
- // Adjust the import path as needed
+import Shimmer from '@/components/ui/Shimmer'; // Adjust the import path as needed
 
-
-function AllSupplyCard() {
+function AllSupplies() {
   const { data: supplies = [], error, isLoading } = useGetSuppliesQuery();
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Shimmer />;
   if (error) return <div>Error fetching supplies</div>;
 
   return (
@@ -18,17 +19,11 @@ function AllSupplyCard() {
         {supplies.map((post) => (
           <CardContainer key={post._id} className="inter-var m-4">
             <CardBody className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-auto sm:w-[30rem] h-auto rounded-xl p-6 border">
-              <CardItem
-                translateZ="50"
-                className="text-xl font-bold text-neutral-600 dark:text-white"
-              >
+              <CardItem translateZ="50" className="text-xl font-bold text-neutral-600 dark:text-white">
                 {post.title}
               </CardItem>
               {post.amount && (
-                <CardItem
-                  translateZ="60"
-                  className="text-neutral-500 text-sm max-w-sm mt-2 dark:text-neutral-300"
-                >
+                <CardItem translateZ="60" className="text-neutral-500 text-sm max-w-sm mt-2 dark:text-neutral-300">
                   {post.amount}
                 </CardItem>
               )}
@@ -42,18 +37,10 @@ function AllSupplyCard() {
                 />
               </CardItem>
               <div className="flex justify-between items-center mt-20">
-                <CardItem
-                  translateZ={20}
-                  as="button"
-                  className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white"
-                >
+                <CardItem translateZ={20} as="button" className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white">
                   Try now →
                 </CardItem>
-                <CardItem
-                  translateZ={20}
-                  as="button"
-                  className="px-4 py-2 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold"
-                >
+                <CardItem translateZ={20} as="button" className="px-4 py-2 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold">
                   Donate Now
                 </CardItem>
               </div>
@@ -65,4 +52,4 @@ function AllSupplyCard() {
   );
 }
 
-export default AllSupplyCard;
+export default AllSupplies;
