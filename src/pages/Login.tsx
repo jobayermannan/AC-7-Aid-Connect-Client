@@ -1,4 +1,4 @@
-import  { SetStateAction, useState } from 'react';
+import {  useState, ChangeEvent } from 'react';
 import { TemplateForm } from './TemplateForm';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -10,8 +10,8 @@ const Login = () => {
   const navigate = useNavigate();
 
   const formFields = [
-    { id: 'email', label: 'Email Address', placeholder: 'yourname@example.com', type: 'email', value: email, onChange: (e: { target: { value: SetStateAction<string>; }; }) => setEmail(e.target.value) },
-    { id: 'password', label: 'Password', placeholder: '••••••••', type: 'password', value: password, onChange: (e: { target: { value: SetStateAction<string>; }; }) => setPassword(e.target.value) }
+    { id: 'email', label: 'Email Address', placeholder: 'yourname@example.com', type: 'email', value: email, onChange: (e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value) },
+    { id: 'password', label: 'Password', placeholder: '••••••••', type: 'password', value: password, onChange: (e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value) }
   ];
 
   const buttonText = 'Sign In';
