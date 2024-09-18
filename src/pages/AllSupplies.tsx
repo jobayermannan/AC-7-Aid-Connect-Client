@@ -1,5 +1,5 @@
 // src/pages/AllSupplies.tsx
-import React from 'react';
+
 import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
 import { useGetSuppliesQuery } from "@/redux/api/SuppliesApi";
 import Shimmer from '@/components/ui/Shimmer'; // Adjust the import path as needed
