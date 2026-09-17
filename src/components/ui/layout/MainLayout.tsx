@@ -5,14 +5,13 @@ import Footer from "./Footer";
 
 
 
-
 const MainLayout= () => {
 
 
-  
+   
   return (
 	
-	 <div className=" ">
+ <div className=" " id="main-content">
 	
 	<div
 	className="">
@@ -26,15 +25,12 @@ const MainLayout= () => {
 
 	 
 			
- </div>
+  </div>
 
- 
-	
+  
+
 
   );
 };
 
 export default MainLayout;
-
-
-	  
