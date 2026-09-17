@@ -6,17 +6,17 @@ import { RouterProvider } from 'react-router-dom'
 import { router } from './routes/routes.tsx'
 import { Provider } from 'react-redux'
 import { store } from './redux/store.ts'
+import ErrorBoundary from './components/ErrorBoundary'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-     <Provider store={store}>
-     <RouterProvider router={router}/>
-     </Provider>
-    
-
-   
-  
+    <Provider store={store}>
+      <ErrorBoundary>
+        <RouterProvider router={router}/>
+        <ToastContainer position="bottom-right" autoClose={3000} />
+      </ErrorBoundary>
+    </Provider>
   </React.StrictMode>,
 )
-
-// document.body.style.backgroundColor = 'black';

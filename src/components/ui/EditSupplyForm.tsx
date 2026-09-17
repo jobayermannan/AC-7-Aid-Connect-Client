@@ -1,9 +1,9 @@
 
 // src/components/EditSupplyForm.tsx
 import React from 'react';
-import { ShadButton } from "@/components/ui/ShadButton";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { ShadButton } from "@/components/ui/base/ShadButton";
+import { Input } from "@/components/ui/base/input";
+import { Label } from "@/components/ui/base/label";
 
 interface Supply {
   _id: string;
