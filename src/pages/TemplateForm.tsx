@@ -1,7 +1,7 @@
 import React from "react";
 import { cn } from "@/utils/cn";
 import { Label } from "@radix-ui/react-label";
-import { Input } from "@/components/ui/input";
+import { Input } from "@/components/ui/base/input";
 import { Link } from "react-router-dom";
 
 interface FormField {

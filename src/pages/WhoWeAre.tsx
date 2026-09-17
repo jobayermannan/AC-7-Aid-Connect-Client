@@ -1,6 +1,5 @@
 import { StickyScroll } from "@/components/ui/sticky-scroll-reveal"
 
-
 const whoWeAre = [
 	{
 	  title: "Our Mission",
@@ -42,15 +41,28 @@ const whoWeAre = [
 	  title: "Our Impact",
 	  description: "With operations in over 50 countries, we have directly supported millions of individuals by providing essential medical supplies, improving healthcare access, and strengthening healthcare systems."
 	}
- ];
- 
- console.log(whoWeAre);
-
+  ];
+  
 const WhoWeAre = () => {
   return (
-	 <div className="p-10">
-		<StickyScroll content={whoWeAre}/>
-	 </div>
+	 <section className="relative py-24 overflow-hidden">
+		<div className="absolute inset-0 bg-gradient-to-b from-black via-surface/20 to-black -z-10" />
+		
+		<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+			<div className="text-center mb-16">
+				<p className="text-sm font-semibold tracking-widest uppercase text-health-accent mb-3">
+					Who we are
+				</p>
+				<h2 className="text-3xl md:text-4xl font-bold text-surface-foreground tracking-tight">
+					Built for the moments that matter most
+				</h2>
+			</div>
+
+			<div className="glass rounded-3xl p-1 overflow-hidden">
+				<StickyScroll content={whoWeAre} />
+			</div>
+		</div>
+	 </section>
   )
 }
 
