@@ -1,14 +1,13 @@
 // src/app/store.ts
 import { configureStore, Middleware } from '@reduxjs/toolkit';
 import { suppliesApi } from './api/SuppliesApi';
-
+import authReducer from './features/authSlice';
 
 export const store = configureStore({
   reducer: {
-    // Add the generated reducer as a specific top-level slice
+    auth: authReducer,
     [suppliesApi.reducerPath]: suppliesApi.reducer,
   },
-  // Adding the api middleware enables caching, invalidation, polling, and other features of RTK Query
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(suppliesApi.middleware as Middleware),
 });
