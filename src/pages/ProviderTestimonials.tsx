@@ -2,59 +2,64 @@
 
 import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
 
-
-
-const medicalSupply = [
+const testimonials = [
 	{
-	  quote: "Empowering communities through health education.",
-	  name: "Public Health Basics",
-	  title: "Learn about the fundamentals of public health, including disease prevention, health promotion, and the importance of community health initiatives. This course covers topics such as epidemiology, global health challenges, and strategies for health advocacy."
+	  quote: "Aid Connect streamlined our medical supply distribution after the earthquake. We reached 12 remote clinics in 48 hours — something that used to take weeks.",
+	  name: "Dr. Sarah Chen",
+	  title: "Field Coordinator, Red Cross"
 	},
 	{
-	  quote: "Bridging the gap between emergency response and long-term recovery.",
-	  name: "Disaster Response and Recovery",
-	  title: "Explore the principles of effective disaster response and recovery efforts, focusing on the role of medical supplies and healthcare services. Topics include emergency medical response, supply chain management in crises, and the psychosocial aspects of disaster recovery."
+	  quote: "The transparency features gave our donors real-time confidence. Donations increased 40% once we could show exactly where supplies went.",
+	  name: "Marcus Osei",
+	  title: "Director, Global Health Alliance"
 	},
 	{
-	  quote: "Understanding the essentials of life-saving support.",
-	  name: "First Aid and Emergency Care",
-	  title: "Gain essential knowledge and skills in first aid and emergency care, crucial for immediate post-disaster scenarios. This course covers basic life support, wound care, and the management of common injuries and emergencies."
+	  quote: "In disaster zones, every minute counts. This platform cut our procurement-to-delivery timeline by more than half.",
+	  name: "Nurse Amara Diallo",
+	  title: "MSF Logistics Lead"
 	},
 	{
-	  quote: "Strengthening the foundation of community health.",
-	  name: "Healthcare System Strengthening",
-	  title: "Dive into the strategies for strengthening healthcare systems, especially in resource-limited settings. Learn about health system components, the role of technology and innovation, and approaches to improve healthcare delivery and patient outcomes."
+	  quote: "We coordinated cross-border shipments from six different warehouses without a single spreadsheet. That is the future of humanitarian logistics.",
+	  name: "James Whitfield",
+	  title: "Supply Chain Director, UNICEF"
 	},
 	{
-	  quote: "Navigating the complexities of mental health in crisis situations.",
-	  name: "Mental Health in Disasters",
-	  title: "Focus on the importance of mental health support during and after disasters. This course provides insights into common mental health challenges, trauma-informed care, and strategies for supporting community resilience and recovery."
+	  quote: "Finally, a tool built for the reality of crisis response — not for a quiet office. The offline-first approach saved us when networks were down.",
+	  name: "Dr. Elena Voss",
+	  title: "Emergency Medicine, WHO"
 	},
 	{
-	  quote: "The art and science of delivering care in challenging environments.",
-	  name: "Mobile Clinics and Field Medicine",
-	  title: "Examine the operation of mobile clinics and the practice of field medicine in disaster zones and remote areas. Topics include logistical challenges, the adaptation of medical practices to field conditions, and the importance of flexibility and innovation in healthcare delivery."
+	  quote: "Our team used to spend days reconciling donor requests with available stock. Now it happens in minutes, with full audit trails.",
+	  name: "Raj Patel",
+	  title: "Operations Manager, Direct Relief"
 	}
- ];
- 
-
- 
-
+  ];
+  
 
 const ProviderTestimonials = () => {
   return (
-	 <div className=" h-[40rem] w-full dark:bg-black dark:bg-grid-white/[0.2] relative flex flex-col items-center justify-center overflow-hidden">
-		<h2 className="text-3xl text-center font-bold z-100 mb-10"> Hear Our  Harmony: Voices of Success</h2>
-	           <div className="w-full  flex justify-center overflow-hidden px-4 sm:px-6 lg:px-8">
-					<div className="w-full max-w-6xl">
-					<InfiniteMovingCards
-        items={ medicalSupply}
-        direction="right"
-        speed="normal"
-      />
-					</div>
-				  </div>
-	 </div>
+	 <section className="relative py-24 overflow-hidden">
+		<div className="absolute inset-0 bg-gradient-to-b from-black via-surface/20 to-black -z-10" />
+		
+		<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+			<div className="text-center mb-16">
+				<p className="text-sm font-semibold tracking-widest uppercase text-health-accent mb-3">
+					Trusted by humanitarian leaders
+				</p>
+				<h2 className="text-3xl md:text-4xl font-bold text-surface-foreground tracking-tight">
+					Voices from the Field
+				</h2>
+			</div>
+
+			<div className="w-full flex justify-center">
+				<div className="w-full max-w-6xl glass rounded-3xl p-2">
+				<InfiniteMovingCards
+					items={testimonials}
+				/>
+				</div>
+			</div>
+		</div>
+	 </section>
   )
 }
 
