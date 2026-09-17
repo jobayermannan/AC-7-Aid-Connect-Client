@@ -1,7 +1,8 @@
 import { SetStateAction, useState } from 'react';
 import { TemplateForm } from './TemplateForm';
-import axios from 'axios';
+import { apiClient } from '@/redux/api/axiosInstance';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -24,16 +25,19 @@ const Register = () => {
     setError('');
 
     try {
-      const response = await axios.post('https://aid-connect-server-rj8hofw7t-jobayermannans-projects.vercel.app/api/v1/register', { name, email, password });
+      const response = await apiClient.post('/register', { name, email, password });
       if (response.data.success) {
+        toast.success('Registration successful! Please log in.');
         navigate('/login');
-        alert('Registration successful! Please log in.');
       } else {
         setError(response.data.message);
+        toast.error(response.data.message);
       }
     } catch (err) {
       console.error('Registration error:', err);
-      setError('Registration failed. Please try again.');
+      const message = 'Registration failed. Please try again.';
+      setError(message);
+      toast.error(message);
     }
   };
 
