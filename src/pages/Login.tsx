@@ -1,6 +1,7 @@
 import {  useState, ChangeEvent } from 'react';
 import { TemplateForm } from './TemplateForm';
 import { apiClient } from '@/redux/api/axiosInstance';
+import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '@/redux/hook';
 import { setCredentials } from '@/redux/features/authSlice';
@@ -29,17 +30,20 @@ const Login = () => {
       const response = await apiClient.post('/login', { email, password });
       if (response.data.success) {
         dispatch(setCredentials({ token: response.data.token, user: { email } }));
-        toast.success('Login successful');
-        navigate('/admin');
+        toast.success('Welcome back!');
+        setTimeout(() => navigate('/admin'), 1000);
       } else {
-        setError(response.data.message);
-        toast.error(response.data.message);
+        const message = response.data.message || 'Login failed. Please check your credentials and try again.';
+        setError(message);
+        toast.error(message);
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Login error:', err);
-      const message = 'Login failed. Please check your credentials and try again.';
-      setError(message);
-      toast.error(message);
+      const message = err instanceof AxiosError
+        ? err.response?.data?.message
+        : 'Login failed. Please check your credentials and try again.';
+      setError(message || 'Login failed. Please check your credentials and try again.');
+      toast.error(message || 'Login failed. Please check your credentials and try again.');
     }
   };
 

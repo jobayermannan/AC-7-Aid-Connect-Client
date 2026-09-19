@@ -10,6 +10,7 @@ import { LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "@/redux/hook";
 import { logout } from "@/redux/features/authSlice";
+import { toast } from 'react-toastify';
 
 export function Navbar() {
   const { isAuthenticated } = useAppSelector((state) => state.auth);
@@ -42,8 +43,9 @@ export function Navbar() {
       className="text-sm font-medium relative border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full"
       onClick={() => {
         if (window.confirm("Are you sure you want to logout?")) {
+          toast.success("You've been logged out.");
           dispatch(logout());
-          navigate("/login", { replace: true });
+          setTimeout(() => navigate("/login", { replace: true }), 1000);
         }
       }}
     >

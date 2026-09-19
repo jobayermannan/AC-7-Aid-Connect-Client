@@ -34,11 +34,12 @@ export default function DashBoardAllSupplies() {
     if (!deleteTargetId) return;
     try {
       await deleteSupply(deleteTargetId).unwrap();
-      refetch();
       toast.success('Supply deleted successfully');
-    } catch (error) {
+      refetch();
+    } catch (error: unknown) {
       console.error('Error deleting supply:', error);
-      toast.error('Failed to delete supply');
+      const message = (error as { data?: { message?: string } })?.data?.message || 'Failed to delete supply';
+      toast.error(message);
     } finally {
       setDeleteTargetId(null);
     }
@@ -49,13 +50,14 @@ export default function DashBoardAllSupplies() {
     if (editSupply) {
       try {
         await updateSupply(editSupply).unwrap();
+        toast.success('Supply updated successfully');
         setEditSupply(null);
         setVisiblePopover(null);
         refetch();
-        toast.success('Supply updated successfully');
-      } catch (error) {
+      } catch (error: unknown) {
         console.error('Error updating supply:', error);
-        toast.error('Failed to update supply');
+        const message = (error as { data?: { message?: string } })?.data?.message || 'Failed to update supply';
+        toast.error(message);
       }
     }
   };

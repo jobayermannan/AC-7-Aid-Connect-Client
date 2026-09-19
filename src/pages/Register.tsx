@@ -1,6 +1,7 @@
 import { SetStateAction, useState } from 'react';
 import { TemplateForm } from './TemplateForm';
 import { apiClient } from '@/redux/api/axiosInstance';
+import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -27,17 +28,20 @@ const Register = () => {
     try {
       const response = await apiClient.post('/register', { name, email, password });
       if (response.data.success) {
-        toast.success('Registration successful! Please log in.');
-        navigate('/login');
+        toast.success('Account created successfully. You can now log in.');
+        setTimeout(() => navigate('/login'), 1000);
       } else {
-        setError(response.data.message);
-        toast.error(response.data.message);
+        const message = response.data.message || 'Registration failed. Please try again.';
+        setError(message);
+        toast.error(message);
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Registration error:', err);
-      const message = 'Registration failed. Please try again.';
-      setError(message);
-      toast.error(message);
+      const message = err instanceof AxiosError
+        ? err.response?.data?.message
+        : 'Registration failed. Please try again.';
+      setError(message || 'Registration failed. Please try again.');
+      toast.error(message || 'Registration failed. Please try again.');
     }
   };
 

@@ -85,11 +85,12 @@ export default function CreateSupplyPostPage() {
 
     try {
       await createSupply(formData).unwrap();
-      toast.success('Supply created successfully');
+      toast.success('Supply post created successfully.');
       setIsSubmitted(true);
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Form submission error:', error);
-      toast.error('Failed to create supply');
+      const message = (error as { data?: { message?: string } })?.data?.message || 'Failed to create supply';
+      toast.error(message);
     }
   };
 

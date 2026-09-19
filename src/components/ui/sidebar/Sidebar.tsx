@@ -12,6 +12,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '@/redux/hook';
 import { logout } from '@/redux/features/authSlice';
+import { toast } from 'react-toastify';
 
 
 
@@ -82,8 +83,9 @@ const mobileWidth = onlyWidth <768
 		      className="w-full justify-start"
 		      onClick={() => {
 		        if (window.confirm('Are you sure you want to logout?')) {
+		          toast.success("You've been logged out.");
 		          dispatch(logout());
-		          navigate('/login', { replace: true });
+		          setTimeout(() => navigate('/login', { replace: true }), 1000);
 		        }
 		      }}
 		    >
