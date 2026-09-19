@@ -1,13 +1,18 @@
 import {  useState, ChangeEvent } from 'react';
 import { TemplateForm } from './TemplateForm';
-import axios from 'axios';
+import { apiClient } from '@/redux/api/axiosInstance';
+import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '@/redux/hook';
+import { setCredentials } from '@/redux/features/authSlice';
+import { toast } from 'react-toastify';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const formFields = [
     { id: 'email', label: 'Email Address', placeholder: 'yourname@example.com', type: 'email', value: email, onChange: (e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value) },
@@ -21,21 +26,24 @@ const Login = () => {
     e.preventDefault();
     setError('');
 
-    // Log the credentials being sent
-    console.log('Sending credentials:', { email, password });
-
     try {
-      const response = await axios.post('https://aid-connect-server-rj8hofw7t-jobayermannans-projects.vercel.app/api/v1/login', { email, password });
-      console.log('Response:', response.data);
+      const response = await apiClient.post('/login', { email, password });
       if (response.data.success) {
-        localStorage.setItem('token', response.data.token);
-        navigate('/admin');
+        dispatch(setCredentials({ token: response.data.token, user: { email } }));
+        toast.success('Welcome back!');
+        setTimeout(() => navigate('/admin'), 1000);
       } else {
-        setError(response.data.message);
+        const message = response.data.message || 'Login failed. Please check your credentials and try again.';
+        setError(message);
+        toast.error(message);
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Login error:', err);
-      setError('Login failed. Please check your credentials and try again.');
+      const message = err instanceof AxiosError
+        ? err.response?.data?.message
+        : 'Login failed. Please check your credentials and try again.';
+      setError(message || 'Login failed. Please check your credentials and try again.');
+      toast.error(message || 'Login failed. Please check your credentials and try again.');
     }
   };
 

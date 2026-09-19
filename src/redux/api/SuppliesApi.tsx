@@ -1,5 +1,7 @@
 // src/api/suppliesApi.ts
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery, BaseQueryFn, FetchBaseQueryMeta } from '@reduxjs/toolkit/query/react';
+import type { RootState } from '../store';
+import { logout } from '../features/authSlice';
 
 type Supply = {
   _id: string;
@@ -14,9 +16,30 @@ interface SuppliesResponse {
   data: Supply[];
 }
 
+const baseQueryWithAuth = fetchBaseQuery({
+  baseUrl: import.meta.env.VITE_API_URL,
+  prepareHeaders: (headers, { getState }) => {
+    const token = (getState() as RootState).auth.token;
+    if (token) {
+      headers.set('Authorization', `Bearer ${token}`);
+    }
+    return headers;
+  },
+});
+
+const baseQueryWithLogout: BaseQueryFn = async (args, api, extraOptions) => {
+  const result = await baseQueryWithAuth(args, api, extraOptions as FetchBaseQueryMeta);
+  const errorStatus = (result as { error?: { status?: number } }).error?.status;
+  if (errorStatus === 401) {
+    api.dispatch(logout());
+    window.location.href = '/login';
+  }
+  return result;
+};
+
 export const suppliesApi = createApi({
   reducerPath: 'suppliesApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://aid-connect-server-rj8hofw7t-jobayermannans-projects.vercel.app/api/v1/' }),
+  baseQuery: baseQueryWithLogout,
   endpoints: (builder) => ({
     getSupplies: builder.query<Supply[], void>({
       query: () => 'supplies',

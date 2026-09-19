@@ -10,6 +10,8 @@ import DashboardProfile from "@/pages/DashboardProfile";
 import AboutUs from "@/pages/AboutUs";
 import AllSupplies from "@/pages/AllSupplies";
 import DashBoardAllSupplies from "@/pages/DashBoardAllSupplies";
+import NotFound from "@/pages/NotFound";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 
 export const router = createBrowserRouter([
   {
@@ -24,7 +26,11 @@ export const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <DashboardLayout />,
+    element: (
+      <ProtectedRoute>
+        <DashboardLayout />
+      </ProtectedRoute>
+    ),
     children: [
       { path: "/admin", element: <DashboardMainPage /> },
       { path: "/admin/profile", element: <DashboardProfile /> },
@@ -33,4 +39,5 @@ export const router = createBrowserRouter([
       { path: "/admin/about-us", element: <AboutUs /> },
     ],
   },
+  { path: "*", element: <NotFound /> },
 ]);

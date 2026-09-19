@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"; // Assuming you have a Select component
+import { Label } from "@/components/ui/base/label";
+import { Input } from "@/components/ui/base/input";
+import { Check, ChevronDown } from "lucide-react";
+import * as SelectPrimitive from "@radix-ui/react-select";
 import { cn } from "@/utils/cn";
 import { useCreateSupplyMutation } from "@/redux/api/SuppliesApi";
+import { toast } from 'react-toastify';
 
-
-// Define the form data types
 interface IFormInput {
   image: FileList;
   category: string;
@@ -18,30 +18,61 @@ interface IFormInput {
   featuring: boolean;
 }
 
-// Define the validation schema
-const schema = yup.object().shape({
+const schema = yup.object<IFormInput>().shape({
   image: yup
-    .mixed()
+    .mixed<FileList>()
     .test("required", "Image is required", (value) => {
-      return value && (value as FileList).length > 0;
-    }),
+      return value && value.length > 0;
+    })
+    .required("Image is required"),
   category: yup.string().required("Category is required"),
   title: yup.string().required("Title is required"),
   amount: yup.number().required("Amount is required").positive().integer(),
   featuring: yup.boolean().required("featuring is required"),
 });
 
+type FormInput = yup.InferType<typeof schema>;
+
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/jpg'];
+
 export default function CreateSupplyPostPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [preview, setPreview] = useState<string | null>(null);
+  const [fileError, setFileError] = useState<string>('');
   const [createSupply] = useCreateSupplyMutation();
 
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm<IFormInput>({
-    resolver: yupResolver(schema) as any, // Type assertion to bypass type mismatch
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm<FormInput>({
+    resolver: yupResolver(schema),
   });
 
-  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setFileError('');
+
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      setFileError('Only JPG and PNG images are allowed.');
+      event.target.value = '';
+      setPreview(null);
+      return;
+    }
+
+    if (file.size > MAX_FILE_SIZE) {
+      setFileError('Image must be smaller than 5MB.');
+      event.target.value = '';
+      setPreview(null);
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(file);
+    setPreview(objectUrl);
+  };
+
+  const onSubmit: SubmitHandler<FormInput> = async (data) => {
     if (!data.image || data.image.length === 0) {
-      alert("Image is required");
+      toast.error("Image is required");
       return;
     }
 
@@ -54,10 +85,12 @@ export default function CreateSupplyPostPage() {
 
     try {
       await createSupply(formData).unwrap();
-      console.log('Form submitted successfully');
-      setIsSubmitted(true); // Set the state to true to show the success message
-    } catch (error) {
+      toast.success('Supply post created successfully.');
+      setIsSubmitted(true);
+    } catch (error: unknown) {
       console.error('Form submission error:', error);
+      const message = (error as { data?: { message?: string } })?.data?.message || 'Failed to create supply';
+      toast.error(message);
     }
   };
 
@@ -69,8 +102,12 @@ export default function CreateSupplyPostPage() {
       <form className="my-8" onSubmit={handleSubmit(onSubmit)}>
         <LabelInputContainer className="mb-4">
           <Label htmlFor="image">Image</Label>
-          <Input id="image" type="file" {...register("image")} />
+          <Input id="image" type="file" {...register("image")} onChange={handleFileChange} />
           {errors.image && <p className="text-red-500">{errors.image.message}</p>}
+          {fileError && <p className="text-red-500">{fileError}</p>}
+          {preview && (
+            <img src={preview} alt="Preview" className="mt-2 h-40 w-full object-cover rounded-md" />
+          )}
         </LabelInputContainer>
         <LabelInputContainer className="mb-4">
           <Label htmlFor="category">Category</Label>
@@ -89,21 +126,41 @@ export default function CreateSupplyPostPage() {
         </LabelInputContainer>
         <LabelInputContainer className="mb-8">
           <Label htmlFor="featuring">Featuring</Label>
-          <Select onValueChange={(value) => {
+          <SelectPrimitive.Root onValueChange={(value) => {
             const booleanValue = value === "true";
-            console.log("Selected featuring value:", booleanValue);
             setValue("featuring", booleanValue);
           }}>
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select Featuring" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="true">True</SelectItem>
-                <SelectItem value="false">False</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+            <SelectPrimitive.Trigger className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1">
+              <SelectPrimitive.Value placeholder="Select Featuring" />
+              <SelectPrimitive.Icon asChild>
+                <ChevronDown className="h-4 w-4 opacity-50" />
+              </SelectPrimitive.Icon>
+            </SelectPrimitive.Trigger>
+            <SelectPrimitive.Portal>
+              <SelectPrimitive.Content className="relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2">
+                <SelectPrimitive.Viewport className="p-1">
+                  <SelectPrimitive.Group>
+                    <SelectPrimitive.Item value="true" className="relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+                      <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
+                        <SelectPrimitive.ItemIndicator>
+                          <Check className="h-4 w-4" />
+                        </SelectPrimitive.ItemIndicator>
+                      </span>
+                      <SelectPrimitive.ItemText>True</SelectPrimitive.ItemText>
+                    </SelectPrimitive.Item>
+                    <SelectPrimitive.Item value="false" className="relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+                      <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
+                        <SelectPrimitive.ItemIndicator>
+                          <Check className="h-4 w-4" />
+                        </SelectPrimitive.ItemIndicator>
+                      </span>
+                      <SelectPrimitive.ItemText>False</SelectPrimitive.ItemText>
+                    </SelectPrimitive.Item>
+                  </SelectPrimitive.Group>
+                </SelectPrimitive.Viewport>
+              </SelectPrimitive.Content>
+            </SelectPrimitive.Portal>
+          </SelectPrimitive.Root>
           {errors.featuring && <p className="text-red-500">{errors.featuring.message}</p>}
         </LabelInputContainer>
         <button

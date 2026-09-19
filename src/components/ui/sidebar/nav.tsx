@@ -4,7 +4,7 @@
 import { LucideIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-import { buttonVariants } from "@/components/ui/ShadButton"
+import { buttonVariants } from "@/components/ui/base/ShadButton"
 import {
   Tooltip,
   TooltipContent,

@@ -1,81 +1,79 @@
-
-
 import { Link } from "react-router-dom";
-import { HoverEffect } from "../components/ui/card-hover-effect";
+import { ShadButton } from "@/components/ui/base/ShadButton";
 
-
+const webinars = [
+	{
+	  slug: "supply-chain-fundamentals",
+	  title: "Supply Chain Fundamentals",
+	  description: "Core principles of medical supply chain management in humanitarian contexts. Covers procurement, inventory control, and last-mile delivery in crisis settings.",
+	  isFeatured: true
+	},
+	{
+	  slug: "crisis-coordination",
+	  title: "Crisis Coordination",
+	  description: "How to align multiple actors — NGOs, governments, donors — during emergency responses. Case studies from recent disaster zones.",
+	  isFeatured: false
+	},
+	{
+	  slug: "inventory-tech",
+	  title: "Inventory Technology",
+	  description: "Practical guide to barcode systems, real-time dashboards, and offline-first tools for field inventory tracking.",
+	  isFeatured: true
+	},
+	{
+	  slug: "donor-engagement",
+	  title: "Donor Engagement",
+	  description: "Transparency best practices that build donor trust. How to report impact without overwhelming non-technical stakeholders.",
+	  isFeatured: false
+	},
+	{
+	  slug: "cold-chain-logistics",
+	  title: "Cold Chain Logistics",
+	  description: "Maintaining vaccine and biologic integrity from warehouse to clinic. Temperature monitoring, cold packs, and contingency planning.",
+	  isFeatured: false
+	},
+	{
+	  slug: "data-ethics",
+	  title: "Data Ethics in Aid",
+	  description: "Protecting beneficiary data while enabling cross-org coordination. Consent, encryption, and responsible data sharing frameworks.",
+	  isFeatured: false
+	}
+  ];
 
 const UpComingWebinars = () => {
-
-	const AidWebiners = [
-		{
-		  slug: "brain-and-behavior",
-		  title: "Brain and Behavior",
-		  description: "Discover the structure and function of the brain as it relates to specific psychological processes and behaviors. This course covers topics such as brain anatomy, neuroplasticity, and the neurological basis of memory, emotion, language, and mental disorders.",
-		  isFeatured: true
-		},
-		{
-		  slug: "forensic-psychology",
-		  title: "Forensic Psychology",
-		  description: "Learn about the application of psychological knowledge to legal issues and court cases. This course covers topics such as criminal profiling, eyewitness testimony, jury decision-making, and the assessment and treatment of offenders.",
-		  isFeatured: false
-		},
-		{
-		  slug: "developmental-psychology",
-		  title: "Developmental Psychology",
-		  description: "Examine the psychological changes that occur throughout a person's life span, from infancy through adulthood. Topics include cognitive and emotional development, language acquisition, and social identity formation.",
-		  isFeatured: true
-		},
-		{
-		  slug: "social-psychology",
-		  title: "Social Psychology",
-		  description: "Study how individuals influence and are influenced by other people and by their social and physical environments. This course covers topics such as attitudes, group behavior, prejudice, interpersonal attraction, and conflict resolution.",
-		  isFeatured: false
-		},
-		{
-		  slug: "social-psychology",
-		  title: "Social Psychology",
-		  description: "Study how individuals influence and are influenced by other people and by their social and physical environments. This course covers topics such as attitudes, group behavior, prejudice, interpersonal attraction, and conflict resolution.",
-		  isFeatured: false
-		},
-		{
-		  slug: "social-psychology",
-		  title: "Social Psychology",
-		  description: "Study how individuals influence and are influenced by other people and by their social and physical environments. This course covers topics such as attitudes, group behavior, prejudice, interpersonal attraction, and conflict resolution.",
-		  isFeatured: false
-		}
-	  ];
-	  
-	 
   return (
-	 <div className="p-12 bg-gray-900">
-	  <div className= "max-w-7xl mx-auto px-4 sm:px-6">
-	  <div className="text-center">
-          <h2 className="text-base text-teal-600 font-semibold tracking-wide uppercase">FEATURED WEBINARS</h2>
-          <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-white sm:text-4xl">Enhance Your Journey</p>
-
-        </div>
-			<div className="mt-10 text-center">
-				<HoverEffect
-				 items={AidWebiners.map((webinar)=>(
-					{
-						title:webinar.title,
-						description:webinar.description,
-						link:'/'
-					}
-				 ))}
-				/>
+	 <section className="relative py-24 overflow-hidden">
+		<div className="absolute inset-0 bg-gradient-to-b from-black via-surface/20 to-black -z-10" />
+		
+		<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+			<div className="text-center mb-16">
+				<p className="text-sm font-semibold tracking-widest uppercase text-health-accent mb-3">
+					Learning hub
+				</p>
+				<h2 className="text-3xl md:text-4xl font-bold text-surface-foreground tracking-tight">
+					Upcoming Webinars
+				</h2>
 			</div>
-			<div className="mt-10 text-center">
-			<Link to={"/"}
-          className="px-4 py-2 rounded border border-neutral-600 text-neutral-700 bg-white hover:bg-gray-100 transition duration-200"
-          >
-            View All webinars
-          </Link>
-			</div>
-	  </div>
 
-	 </div>
+			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+				{webinars.map((webinar) => (
+					<div key={webinar.slug} className="glass rounded-2xl p-6">
+						<h3 className="text-lg font-semibold text-surface-foreground mb-2">{webinar.title}</h3>
+						<p className="text-sm text-surface-foreground/70">{webinar.description}</p>
+					</div>
+				))}
+			</div>
+
+			<div className="mt-12 text-center">
+				<ShadButton 
+					variant="outline"
+					className="border-glass-border text-surface-foreground hover:bg-surface/10 hover:text-health-accent"
+				>
+					<Link to="/">View All Webinars</Link>
+				</ShadButton>
+			</div>
+		</div>
+	</section>
   )
 }
 

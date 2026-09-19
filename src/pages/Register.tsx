@@ -1,7 +1,9 @@
 import { SetStateAction, useState } from 'react';
 import { TemplateForm } from './TemplateForm';
-import axios from 'axios';
+import { apiClient } from '@/redux/api/axiosInstance';
+import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -24,16 +26,22 @@ const Register = () => {
     setError('');
 
     try {
-      const response = await axios.post('https://aid-connect-server-rj8hofw7t-jobayermannans-projects.vercel.app/api/v1/register', { name, email, password });
+      const response = await apiClient.post('/register', { name, email, password });
       if (response.data.success) {
-        navigate('/login');
-        alert('Registration successful! Please log in.');
+        toast.success('Account created successfully. You can now log in.');
+        setTimeout(() => navigate('/login'), 1000);
       } else {
-        setError(response.data.message);
+        const message = response.data.message || 'Registration failed. Please try again.';
+        setError(message);
+        toast.error(message);
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Registration error:', err);
-      setError('Registration failed. Please try again.');
+      const message = err instanceof AxiosError
+        ? err.response?.data?.message
+        : 'Registration failed. Please try again.';
+      setError(message || 'Registration failed. Please try again.');
+      toast.error(message || 'Registration failed. Please try again.');
     }
   };
 
